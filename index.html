@@ -182,8 +182,8 @@
     gap:6px;
   }
   .code-zone{
-    background:#f6ad3a;
-    border-color:#ea8a00;
+    background:#dff7ee;
+    border-color:#6ee7b7;
   }
   .code-zone .zone-head h3,
   .code-zone .mini{color:#111827}
@@ -203,6 +203,11 @@
   .code-zone .tile.empty .code{
     background:#fed7aa;
     color:#7c2d12;
+  }
+
+  .card-zone{
+    background:#fff7cc;
+    border-color:#f4d36b;
   }
 
   .zone-head{display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap}
@@ -369,7 +374,7 @@
     .grid{grid-template-columns:repeat(var(--cols,4),minmax(0,1fr))}
   }
 </style>
-<script type="text/javascript" nonce="ed671e23eea742988b6dec8f2c6" src="//local.adguard.org?ts=1783633335801&amp;type=content-script&amp;dmn=chatgpt.com&amp;url=https%3A%2F%2Fchatgpt.com%2Fbackend-api%2Festuary%2Fcontent%3Fid%3Dfile_00000000ebd072098c92293ab93c0452%26fn%3Dbit_assignment_taiken_dropdown%25289%2529.html%26cd%3Dattachment%26ts%3D495454%26p%3Dfs%26cid%3D1%26sig%3Db435094c65c00101d8326844f1ff8f1fd3f432b8d674037ece944d22f6ab595b%26v%3D0&amp;app=com.microsoft.edgemac&amp;css=2&amp;js=1&amp;rel=1&amp;rji=1&amp;sbe=1&amp;stealth=1&amp;st-push&amp;st-loc&amp;st-dnt"></script><script type="text/javascript" nonce="ed671e23eea742988b6dec8f2c6" src="//local.adguard.org?ts=1783633335801&amp;name=AdGuard%20Extra&amp;type=user-script"></script></head>
+<script type="text/javascript" nonce="ed671e23eea742988b6dec8f2c6" src="//local.adguard.org?ts=1783633335801&amp;type=content-script&amp;dmn=chatgpt.com&amp;url=https%3A%2F%2Fchatgpt.com%2Fbackend-api%2Festuary%2Fcontent%3Fid%3Dfile_00000000d51072098205b348ab12fca2%26ts%3D495454%26p%3Dfs%26cid%3D1%26sig%3Dad2c5cf933e7d437284e544ad81f5b08b992f9bbe00f24a719e6dbcd66623468%26v%3D0&amp;app=com.microsoft.edgemac&amp;css=2&amp;js=1&amp;rel=1&amp;rji=1&amp;sbe=1&amp;stealth=1&amp;st-push&amp;st-loc&amp;st-dnt"></script><script type="text/javascript" nonce="ed671e23eea742988b6dec8f2c6" src="//local.adguard.org?ts=1783633335801&amp;name=AdGuard%20Extra&amp;type=user-script"></script></head>
 <body>
 <div class="app">
   <div class="topbar">
@@ -433,7 +438,7 @@
         <div class="zone-foot" id="slotFoot"></div>
       </div>
 
-      <div class="zone">
+      <div class="zone card-zone">
         <div class="zone-head">
           <h3>割り当てるカード</h3>
           <div class="mini" id="cardHeadNote">未割り当て</div>
@@ -461,7 +466,7 @@
 
 <script>
 const examples = [
-  {key:'coin', title:'コイン', bits:1, items:['表','裏']},
+  {key:'coin', title:'コイン', bits:0, items:['表','裏']},
   {key:'rps', title:'じゃんけん', bits:1, items:['グー','チョキ','パー']},
   {key:'dir', title:'東西南北', bits:1, items:['北','東','南','西']},
   {key:'week', title:'曜日', bits:2, items:['月','火','水','木','金','土','日']},
@@ -480,8 +485,8 @@ const examples = [
 const $ = id => document.getElementById(id);
 const capacity = b => 2 ** b;
 const neededBits = n => Math.ceil(Math.log2(Math.max(1,n)));
-const code = (i,b) => i.toString(2).padStart(b,'0');
-let current = examples.find(e => e.key === 'zodiac');
+const code = (i,b) => b === 0 ? '∅' : i.toString(2).padStart(b,'0');
+let current = examples.find(e => e.key === 'coin');
 let bits = current.bits;
 let assigned = false;
 
@@ -506,7 +511,7 @@ function loadExample(key){
 }
 
 function setBits(value){
-  bits = Math.max(1, Math.min(8, value));
+  bits = Math.max(0, Math.min(8, value));
   assigned = false;
   hideFloat();
   render();
